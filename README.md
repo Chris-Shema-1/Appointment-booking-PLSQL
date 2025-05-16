@@ -27,9 +27,8 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Defined the project scope, target users, and system objectives.  
 - Created a PowerPoint presentation outlining the key features and objectives.
 
-**Files:**  
-- [`PhaseI/problem_statement.pdf`](../PhaseI/problem_statement.pdf)  
-- [`PhaseI/presentation.pptx`](../PhaseI/presentation.pptx)
+**Files:**   
+- [`PhaseI/presentation.pptx`](../PhaseI/PL-SQL.pptx)
 
 ---
 
@@ -38,7 +37,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Identified key actors: Patient, System, Provider, Admin.
 
 **Files:**  
-- [`PhaseII/process_modeling_diagram.png`](../PhaseII/process_modeling_diagram.png)
+- [`PhaseII/process_modeling_diagram.png`](../PhaseII/Swimlane Diagram_diagram.png)
 
 ---
 
@@ -47,7 +46,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Ensured 3NF compliance to minimize data redundancy.
 
 **Files:**  
-- [`PhaseIII/er_diagram.png`](../PhaseIII/er_diagram.png)
+- [`PhaseIII/er_diagram.png`](../PhaseIII/ER_Diagram.png)
 
 ---
 
@@ -56,7 +55,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Configured OEM monitoring and captured key metrics.
 
 **Files:**  
-- [`PhaseIV/create_pdb.sql`](../PhaseIV/create_pdb.sql)  
+- [`PhaseIV/create_pdb.sql`](../PhaseIV/createPDB.sql)  
 - [`PhaseIV/OEM_screenshot.png`](../PhaseIV/OEM_screenshot.png)  
 - [`PhaseIV/PhaseIV_Report.md`](../PhaseIV/PhaseIV_Report.md)
 
@@ -68,7 +67,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Created a detailed data dictionary.
 
 **Files:**  
-- [`PhaseV/phase_v_tables_and_data.sql`](../PhaseV/phase_v_tables_and_data.sql)  
+- [`PhaseV/phase_v_tables_and_data.sql`](../PhaseV/Creating Tables.JPG)  
 - [`PhaseV/data_dictionary.md`](../PhaseV/data_dictionary.md)
 
 ---
@@ -141,8 +140,8 @@ The Appointment Scheduling System successfully integrates business rules, auditi
 
 ### 📎 **7. References & Appendix**
 
-- ER Diagram: [PhaseIII/er_diagram.png](../PhaseIII/er_diagram.png)  
-- PDB Creation Script: [PhaseIV/create_pdb.sql](../PhaseIV/create_pdb.sql)  
+- ER Diagram: [PhaseIII/er_diagram.png](../PhaseIII/ER_Diagram.png)  
+- PDB Creation Script: [PhaseIV/create_pdb.sql](../PhaseIV/createPDB.sql)  
 - Test Log: [PhaseVII/test_log.txt](../PhaseVII/test_log.txt)  
 - Presentation: [PhaseVIII/presentation.pptx](../PhaseVIII/presentation.pptx)
 
