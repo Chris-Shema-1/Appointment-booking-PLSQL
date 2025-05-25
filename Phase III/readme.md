@@ -225,4 +225,4 @@ This robust normalized foundation enables:
 
 ---
 
-*This documentation serves as the foundation for the complete database implementation of the Appointment Scheduling System, ensuring adherence to industry best practices and academic standards.*
+*This documentation serves as the foundation for the complete database implementation of the Appointment Scheduling System, ensuring adherence to industry best practices.*
