@@ -256,7 +256,7 @@ The Appointment Scheduling System successfully integrates business rules, auditi
 - ER Diagram: [PhaseIII/er_diagram.png](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20III/ER_Diagram.png)  
 - PDB Creation Script: [PhaseIV/create_pdb.sql](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20IV/createPDB.sql)  
 - Test Log: [PhaseVII/test_log.txt](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/test_log.md)  
-- Presentation: [PhaseVIII/presentation.pptx](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/tree/main/Phase%20VIII%20%5B%20final%20%5D)
+- Presentation: [PhaseVIII/presentation.pptx](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VIII%20%5B%20final%20%5D/Appointment-Scheduling-System.pptx)
 
 ---
 
