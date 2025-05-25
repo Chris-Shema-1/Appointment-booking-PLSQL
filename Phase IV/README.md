@@ -29,3 +29,5 @@ GRANT DBA TO admin;
 ```
 ## 3. OEM Dashboard Screenshot
 Below is the OEM console view showing our new PDB target and key metrics:
+
+![Image](https://github.com/user-attachments/assets/65a82949-bf48-4d33-a733-1e10f4217d5d)
