@@ -17,8 +17,9 @@ CREATE PLUGGABLE Thur_26991_ShemaChristian_AppointmentDB
 ALTER PLUGGABLE DATABASE Thur_26991_ShemaChristian_AppointmentDB;
 ALTER PLUGGABLE DATABASE Thur_26991_ShemaChristian_AppointmentDB;
 ---
-![Image](https://github.com/user-attachments/assets/42fc3907-8b40-4842-ab5c-b2372db942ce)
+
 ```
+![Image](https://github.com/user-attachments/assets/42fc3907-8b40-4842-ab5c-b2372db942ce)
 
 ## 2. grant_privileges.sq
 After reconnecting as SYSDBA, we switch to the PDB container and grant the `DBA` role to `admin:`
