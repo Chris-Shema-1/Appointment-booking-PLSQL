@@ -6,6 +6,8 @@
 
 ---
 
+![Image](https://github.com/user-attachments/assets/f69bbea9-a16d-4a37-9f0a-e29b768ad508)
+
 ## 🌟 **1. Introduction**
 
 In today’s fast-paced world, managing appointments efficiently is crucial for service-based businesses. This project focuses on developing a comprehensive **Appointment Scheduling System** for a dental clinic, enabling smooth booking, rescheduling, and cancellation of appointments while ensuring data integrity and maintaining audit logs for accountability.
@@ -28,7 +30,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Created a PowerPoint presentation outlining the key features and objectives.
 
 **Files:**   
-- [`PhaseI/presentation.pptx`](../PhaseI/PL-SQL.pptx)
+- [`PhaseI/presentation.pptx`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20I/PL-SQL.pptx)
 
 ---
 
@@ -37,7 +39,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Identified key actors: Patient, System, Provider, Admin.
 
 **Files:**  
-- [`PhaseII/process_modeling_diagram.png`](../PhaseII/Swimlane Diagram_diagram.png)
+- [`PhaseII/process_modeling_diagram.png`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20II/Swimlane%20Diagram.png)
 
 ---
 
@@ -46,7 +48,8 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Ensured 3NF compliance to minimize data redundancy.
 
 **Files:**  
-- [`PhaseIII/er_diagram.png`](../PhaseIII/ER_Diagram.png)
+- [`PhaseIII/er_diagram.png`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20II/Swimlane%20Diagram.png)
+![Image](https://github.com/user-attachments/assets/e23beea0-157f-4fb8-a8c3-1642fef0d7da)
 
 ---
 
@@ -55,9 +58,9 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Configured OEM monitoring and captured key metrics.
 
 **Files:**  
-- [`PhaseIV/create_pdb.sql`](../PhaseIV/createPDB.sql)  
-- [`PhaseIV/OEM_screenshot.png`](../PhaseIV/OEM_screenshot.png)  
-- [`PhaseIV/PhaseIV_Report.md`](../PhaseIV/PhaseIV_Report.md)
+- [`PhaseIV/create_pdb.sql`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20IV/createPDB.sql)  
+- [`PhaseIV/OEM_screenshot.png`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20IV/OEM_screenshot.png)  
+- [`PhaseIV/PhaseIV_Report.md`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20IV/PhaseIV_Report.md)
 
 ---
 
@@ -66,9 +69,10 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Inserted seed data for testing purposes.  
 - Created a detailed data dictionary.
 
-**Files:**  
-- [`PhaseV/phase_v_tables_and_data.sql`](../PhaseV/Creating Tables.JPG)  
-- [`PhaseV/data_dictionary.md`](../PhaseV/data_dictionary.md)
+**Files:**   
+- [`PhaseV/data_dictionary.md`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20V/data_dictionary.md)
+  
+- ![Image](https://github.com/user-attachments/assets/070c302f-7a40-441e-8437-77dddb3c889f)
 
 ---
 
@@ -79,9 +83,118 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - Applied window functions and exception handling for data validation.
 
 **Files:**  
-- [`PhaseVI/phase_vi_procedures.sql`](../PhaseVI/phase_vi_procedures.sql)  
-- [`PhaseVI/phase_vi_cursor.sql`](../PhaseVI/phase_vi_cursor.sql)  
-- [`PhaseVI/data_dictionary_phase_vi.md`](../PhaseVI/data_dictionary_phase_vi.md)
+- [`PhaseVI/phase_vi_procedures.sql`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VI/phase_vi_procedures.sql) 
+
+  # SQL Procedure: BookAppointment
+
+```sql
+CREATE OR REPLACE PROCEDURE BookAppointment(
+  p_patient_id    NUMBER,
+  p_provider_id   NUMBER,
+  p_service_id    NUMBER,
+  p_date          DATE,
+  p_time          TIMESTAMP
+) IS
+  v_slot_available NUMBER;
+  v_appointment_id NUMBER;
+  v_provider_exists NUMBER;
+  v_patient_exists NUMBER;
+  v_service_exists NUMBER;
+BEGIN
+  -- Check if provider exists
+  SELECT COUNT(*) INTO v_provider_exists
+  FROM app_user
+  WHERE user_id = p_provider_id AND role = 'Provider';
+  
+  IF v_provider_exists = 0 THEN
+    RAISE_APPLICATION_ERROR(-20002, 'Provider does not exist.');
+  END IF;
+  
+  -- Check if patient exists
+  SELECT COUNT(*) INTO v_patient_exists
+  FROM app_user
+  WHERE user_id = p_patient_id AND role = 'Patient';
+  
+  IF v_patient_exists = 0 THEN
+    RAISE_APPLICATION_ERROR(-20003, 'Patient does not exist.');
+  END IF;
+  
+  -- Check if service exists
+  SELECT COUNT(*) INTO v_service_exists
+  FROM service
+  WHERE service_id = p_service_id;
+  
+  IF v_service_exists = 0 THEN
+    RAISE_APPLICATION_ERROR(-20004, 'Service does not exist.');
+  END IF;
+  
+  -- Check if the slot is available
+  SELECT COUNT(*) INTO v_slot_available
+  FROM appointment
+  WHERE provider_id = p_provider_id
+    AND appointment_date = p_date
+    AND appointment_time = p_time;
+    
+  IF v_slot_available > 0 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Time slot is already booked.');
+  ELSE
+    -- Insert the appointment
+    INSERT INTO appointment (appointment_date, appointment_time, status, patient_id, provider_id, service_id)
+    VALUES (p_date, p_time, 'Scheduled', p_patient_id, p_provider_id, p_service_id)
+    RETURNING appointment_id INTO v_appointment_id;
+    
+    -- Create a reminder for 24 hours before the appointment
+    INSERT INTO reminder (reminder_date, appointment_id)
+    VALUES (p_time - INTERVAL '1' DAY, v_appointment_id);
+    
+    -- Commit the transaction
+    COMMIT;
+    
+    DBMS_OUTPUT.PUT_LINE('Appointment booked with ID: ' || v_appointment_id);
+  END IF;
+EXCEPTION
+  WHEN OTHERS THEN
+    -- Rollback in case of error
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END BookAppointment;
+/
+```
+
+- [`PhaseVI/phase_vi_cursor.sql`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VI/phase_vi_cursor.sql)
+
+
+# SQL Cursor Example: Appointment Retrieval
+
+```sql
+DECLARE
+  CURSOR appt_cursor IS 
+    SELECT appointment_id, appointment_date, appointment_time 
+    FROM appointment 
+    WHERE provider_id = 11 AND status = 'Scheduled';
+    
+  v_appt_id NUMBER;
+  v_date    DATE;
+  v_time    TIMESTAMP;
+BEGIN
+  OPEN appt_cursor;
+  
+  LOOP
+    FETCH appt_cursor INTO v_appt_id, v_date, v_time;
+    EXIT WHEN appt_cursor%NOTFOUND;
+
+    DBMS_OUTPUT.PUT_LINE('Appointment ID: ' || v_appt_id || 
+                         ' Date: ' || v_date || 
+                         ' Time: ' || v_time);
+  END LOOP;
+  
+  CLOSE appt_cursor;
+END;
+/
+
+```
+
+- [`PhaseVI/data_dictionary_phase_vi.md`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VI/data_dictionary_phase_vi.md)
 
 ---
 
@@ -95,10 +208,10 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - 🔒 **Attempted Cancellation Within 24 Hours:** Trigger successfully prevents the action and raises an exception.  
 
 **Files:**  
-- [`PhaseVII/audit_table.sql`](../PhaseVII/audit_table.sql)  
-- [`PhaseVII/audit_trigger.sql`](../PhaseVII/audit_trigger.sql)  
-- [`PhaseVII/prevent_cancel_trigger.sql`](../PhaseVII/prevent_cancel_trigger.sql)  
-- [`PhaseVII/test_log.txt`](../PhaseVII/test_log.txt)
+- [`PhaseVII/audit_table.sql`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/audit_table.sql)  
+- [`PhaseVII/audit_trigger.sql`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/audit_trigger.sql)  
+- [`PhaseVII/prevent_cancel_trigger.sql`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/prevent_cancel_trigger.sql)  
+- [`PhaseVII/test_log.txt`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/test_log.md)
 
 ---
 
@@ -110,7 +223,7 @@ In today’s fast-paced world, managing appointments efficiently is crucial for 
 - **Scenario 4:** Deleted an appointment and confirmed the audit log captured the deletion.
 
 📂 **Test Log:**  
-- All testing outputs and exception messages are documented in [`PhaseVII/test_log.txt`](../PhaseVII/test_log.txt).
+- All testing outputs and exception messages are documented in [`PhaseVII/test_log.txt`](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/test_log.md).
 
 ---
 
@@ -140,10 +253,10 @@ The Appointment Scheduling System successfully integrates business rules, auditi
 
 ### 📎 **7. References & Appendix**
 
-- ER Diagram: [PhaseIII/er_diagram.png](../PhaseIII/ER_Diagram.png)  
-- PDB Creation Script: [PhaseIV/create_pdb.sql](../PhaseIV/createPDB.sql)  
-- Test Log: [PhaseVII/test_log.txt](../PhaseVII/test_log.txt)  
-- Presentation: [PhaseVIII/presentation.pptx](../PhaseVIII/presentation.pptx)
+- ER Diagram: [PhaseIII/er_diagram.png](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20III/ER_Diagram.png)  
+- PDB Creation Script: [PhaseIV/create_pdb.sql](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20IV/createPDB.sql)  
+- Test Log: [PhaseVII/test_log.txt](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/blob/main/Phase%20VII/test_log.md)  
+- Presentation: [PhaseVIII/presentation.pptx](https://github.com/Chris-Shema-1/Appointment-booking-PLSQL/tree/main/Phase%20VIII%20%5B%20final%20%5D)
 
 ---
 
